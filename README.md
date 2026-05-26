@@ -41,7 +41,7 @@ Verify in the Table Editor:
 | `matches`          | 134 (72 group + 32 R32 + 16 R16 + 8 QF + 4 SF + 1 third-place + 1 final) |
 | `profiles`         | 6 (1 admin + 5 demo)  |
 | `predictions`      | 15 (sample)   |
-| `bracket_picks`    | 18 (Alice's sample bracket) |
+| `bracket_picks`    | 17 (Alice's sample bracket: 8 R32 + 4 R16 + 2 QF + 1 SF + 1 Final + 1 Winner) |
 
 ### 3. Configure the app
 
