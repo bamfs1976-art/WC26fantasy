@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  style-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+  connect-src 'self' https://*.supabase.co wss://*.supabase.co;
+  img-src 'self' data:;
+  font-src 'self';
+  base-uri 'self';
+  form-action 'self';
+">
+<title>World Cup Office Predictor 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>⚽</text></svg>">
+<style>
+/* ---------- TOKENS -------------------------------------------------- */
+:root {
+  --bg-primary:    #0f172a;
+  --bg-secondary:  #1e293b;
+  --bg-tertiary:   #334155;
+  --bg-hover:      #475569;
+  --text-primary:  #f1f5f9;
+  --text-secondary:#94a3b8;
+  --text-muted:    #64748b;
+  --accent-green:  #22c55e;
+  --accent-green-h:#16a34a;
+  --accent-blue:   #3b82f6;
+  --accent-gold:   #facc15;
+  --danger:        #ef4444;
+  --border:        #475569;
+  --border-soft:   #334155;
+  --radius:        10px;
+  --radius-sm:     6px;
+  --radius-lg:     16px;
+  --shadow:        0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.2);
+  --shadow-soft:   0 1px 1px rgba(0,0,0,.2);
+  --font:          ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:     ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --nav-h:         60px;
+}
+[data-theme="light"] {
+  --bg-primary:    #f8fafc;
+  --bg-secondary:  #ffffff;
+  --bg-tertiary:   #f1f5f9;
+  --bg-hover:      #e2e8f0;
+  --text-primary:  #0f172a;
+  --text-secondary:#475569;
+  --text-muted:    #64748b;
+  --border:        #cbd5e1;
+  --border-soft:   #e2e8f0;
+  --shadow:        0 1px 2px rgba(15,23,42,.05), 0 4px 12px rgba(15,23,42,.05);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html,body { margin:0; padding:0; height:100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  font-size: 15px;
+  line-height: 1.5;
+}
+a { color: var(--accent-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- LAYOUT -------------------------------------------------- */
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+.topnav {
+  position: sticky; top:0; z-index: 50;
+  height: var(--nav-h);
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-soft);
+  backdrop-filter: blur(8px);
+}
+.brand { font-weight: 700; letter-spacing:-.01em; font-size: 17px; display:flex; align-items:center; gap:8px; }
+.brand .dot { width:10px; height:10px; border-radius:50%; background: var(--accent-green); display:inline-block; box-shadow: 0 0 12px var(--accent-green); }
+.navlinks { display: flex; gap: 4px; margin-left: 12px; }
+.navlinks a {
+  color: var(--text-secondary);
+  padding: 8px 12px; border-radius: var(--radius-sm); font-weight:500; font-size:14px;
+}
+.navlinks a:hover { background: var(--bg-tertiary); color: var(--text-primary); text-decoration:none; }
+.navlinks a.active { color: var(--text-primary); background: var(--bg-tertiary); }
+.navlinks a.admin { color: var(--accent-gold); }
+.spacer { flex: 1; }
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 999px;
+  background: var(--bg-tertiary); font-size: 13px; font-weight: 500;
+  cursor: pointer;
+}
+.user-chip:hover { background: var(--bg-hover); }
+.avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:#fff; letter-spacing:0;
+}
+.icon-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
+  width:36px; height:36px; border-radius: 50%; cursor: pointer;
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+}
+.icon-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.icon-btn:focus-visible { outline:2px solid var(--accent-blue); outline-offset:2px; }
+
+main { flex: 1; padding: 28px 20px 80px; max-width: 1200px; margin: 0 auto; width: 100%; }
+.screen { display: none; animation: fade .15s ease; }
+.screen.active { display: block; }
+@keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity:1; transform:none; } }
+
+h1 { font-size: 26px; margin: 0 0 4px; letter-spacing:-.02em; font-weight: 700; }
+h2 { font-size: 18px; margin: 28px 0 12px; letter-spacing:-.01em; font-weight: 600; }
+h3 { font-size: 14px; margin: 0 0 10px; color: var(--text-secondary); text-transform:uppercase; letter-spacing:.04em; font-weight: 600; }
+.sub { color: var(--text-secondary); font-size:14px; margin: 0 0 24px; }
+
+/* ---------- CARDS / TABLES ----------------------------------------- */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+}
+.card + .card { margin-top: 16px; }
+.cards-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); }
+.stat .label { color: var(--text-secondary); font-size: 12px; text-transform:uppercase; letter-spacing:.05em; }
+.stat .value { font-size: 30px; font-weight: 700; letter-spacing:-.02em; margin-top: 4px; }
+.stat .value.small { font-size: 22px; }
+.stat .delta { font-size: 12px; color: var(--text-secondary); margin-top:2px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-soft); }
+th { font-weight: 600; color: var(--text-secondary); font-size: 12px; text-transform:uppercase; letter-spacing:.04em; }
+tbody tr:hover { background: var(--bg-tertiary); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.muted { color: var(--text-secondary); }
+.pill {
+  display: inline-block; padding: 2px 8px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  background: var(--bg-tertiary); color: var(--text-secondary);
+}
+.pill.live { background: var(--danger); color: #fff; }
+.pill.locked { background: var(--bg-tertiary); color: var(--text-muted); }
+.pill.scored { background: var(--accent-green); color: #052e16; }
+.pill.exact { background: var(--accent-gold); color: #422006; }
+.pill.gold { background: var(--accent-gold); color:#422006; }
+.pill.alive { background: var(--accent-green); color:#052e16; }
+.pill.dead { background: var(--bg-tertiary); color: var(--text-muted); text-decoration:line-through; }
+
+/* ---------- BUTTONS / INPUTS --------------------------------------- */
+button, .btn {
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  padding: 9px 16px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary); color: var(--text-primary);
+  cursor: pointer; line-height: 1; letter-spacing:0;
+}
+button:hover, .btn:hover { background: var(--bg-hover); }
+button:focus-visible, .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent-blue); outline-offset: 2px;
+}
+.btn-primary { background: var(--accent-green); color: #052e16; border-color: var(--accent-green); }
+.btn-primary:hover { background: var(--accent-green-h); }
+.btn-danger { background: var(--danger); color: #fff; border-color: var(--danger); }
+.btn-danger:hover { filter: brightness(1.1); }
+.btn-ghost { background: transparent; }
+.btn-sm { padding: 6px 10px; font-size: 12px; }
+button[disabled] { opacity: .5; cursor: not-allowed; }
+
+input, select, textarea {
+  font-family: inherit; font-size: 14px;
+  background: var(--bg-primary); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 8px 12px; width: 100%;
+}
+input[type="number"] { width: 60px; text-align:center; font-variant-numeric: tabular-nums; font-weight: 600; }
+label { font-size: 13px; color: var(--text-secondary); display:block; margin-bottom: 4px; }
+
+/* ---------- LOGIN --------------------------------------------------- */
+.login-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+  background: radial-gradient(ellipse at top, rgba(34,197,94,.08), transparent 70%), var(--bg-primary);
+}
+.login-card {
+  width: 100%; max-width: 380px;
+  background: var(--bg-secondary); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow);
+}
+.login-card h1 { font-size: 22px; margin-bottom: 4px; }
+.login-card .sub { margin-bottom: 24px; }
+.login-card .field { margin-bottom: 14px; }
+.login-card .field input { padding: 12px; font-size: 16px; }
+.login-card button[type=submit] { width: 100%; padding: 12px; font-size: 15px; }
+.login-card .err { color: var(--danger); font-size: 13px; margin-top: 10px; min-height: 18px; }
+.login-card .footer { margin-top: 18px; font-size: 12px; color: var(--text-muted); text-align: center; }
+.login-card .footer code { background: var(--bg-tertiary); padding: 1px 5px; border-radius: 4px; font-size:11px; }
+
+/* ---------- FIXTURE / PREDICT ROWS --------------------------------- */
+.fixture {
+  display: grid;
+  grid-template-columns: 70px 1fr auto 1fr 70px;
+  align-items: center; gap: 10px;
+  padding: 14px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-soft); border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+.fixture .home, .fixture .away { font-weight: 600; }
+.fixture .home { text-align: right; }
+.fixture .flag { font-size: 22px; line-height: 1; margin: 0 6px; vertical-align: middle; }
+.fixture .vs {
+  display:flex; flex-direction:column; align-items: center; gap: 2px;
+  font-size: 11px; color: var(--text-secondary);
+}
+.fixture .vs .kickoff { font-variant-numeric: tabular-nums; }
+.fixture .pred {
+  display:flex; align-items:center; gap: 4px; justify-content: center;
+}
+.fixture .pred input { width: 44px; padding: 6px; font-size: 16px; }
+.fixture .pred .dash { color: var(--text-muted); }
+.fixture .result {
+  font-weight: 700; font-variant-numeric: tabular-nums; font-size:18px;
+  text-align: center;
+}
+.fixture .meta { font-size: 11px; color: var(--text-muted); }
+.fixture.locked { opacity: .9; background: var(--bg-tertiary); }
+.fixture.scored .pred { display:none; }
+.fixture .score-pill {
+  font-size: 11px; padding: 3px 8px; border-radius: 999px;
+  font-weight: 600;
+}
+.section-head {
+  display:flex; align-items: baseline; justify-content: space-between;
+  margin: 22px 0 8px;
+}
+.section-head h2 { margin: 0; }
+.section-head .meta { font-size: 12px; color: var(--text-muted); }
+
+/* ---------- BRACKET ------------------------------------------------- */
+.bracket-progress {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 20px;
+}
+.bracket-progress .step {
+  background: var(--bg-secondary); border: 1px solid var(--border-soft);
+  border-radius: var(--radius); padding: 10px; text-align: center;
+}
+.bracket-progress .step .stage { font-size: 11px; color: var(--text-secondary); text-transform:uppercase; letter-spacing:.04em; }
+.bracket-progress .step .count { font-size: 18px; font-weight: 700; margin-top: 2px; font-variant-numeric:tabular-nums; }
+.bracket-progress .step.done { border-color: var(--accent-green); }
+.bracket-progress .step.done .count { color: var(--accent-green); }
+
+.team-pick {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; background: var(--bg-secondary);
+  border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+  cursor: pointer; font-size: 13px; font-weight: 500;
+  user-select: none;
+}
+.team-pick:hover { background: var(--bg-tertiary); }
+.team-pick.picked { background: rgba(34,197,94,.12); border-color: var(--accent-green); }
+.team-pick.alive { background: rgba(34,197,94,.18); border-color: var(--accent-green); }
+.team-pick.dead  { opacity: .45; text-decoration: line-through; }
+.team-pick .flag { font-size: 16px; }
+.team-pick .grp { color: var(--text-muted); font-size: 11px; margin-left: auto; }
+.team-pick.disabled { cursor: not-allowed; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap: 6px; }
+
+.bracket-section { margin-bottom: 28px; }
+.bracket-section .rule { color: var(--text-secondary); font-size: 13px; margin: 0 0 12px; }
+.bracket-section .picked-count { color: var(--accent-green); font-weight:600; }
+.bracket-section .picked-count.over { color: var(--danger); }
+
+/* ---------- LEADERBOARD -------------------------------------------- */
+.leaderboard .rank-1 { background: linear-gradient(90deg, rgba(250,204,21,.15), transparent); }
+.leaderboard .rank-2 { background: linear-gradient(90deg, rgba(148,163,184,.12), transparent); }
+.leaderboard .rank-3 { background: linear-gradient(90deg, rgba(217,119,6,.12), transparent); }
+.leaderboard .me { outline: 2px solid var(--accent-green); outline-offset: -2px; }
+.leaderboard td.rank { font-weight: 700; font-variant-numeric: tabular-nums; width: 50px; }
+.leaderboard td.player { display:flex; align-items:center; gap: 10px; }
+.leaderboard td.player .avatar { width: 26px; height: 26px; font-size: 10px; }
+
+/* ---------- ADMIN --------------------------------------------------- */
+.tabs { display:flex; gap:4px; margin-bottom: 18px; border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
+.tabs button {
+  background: transparent; border: none; border-bottom: 2px solid transparent;
+  padding: 10px 14px; color: var(--text-secondary); font-weight:500; border-radius:0;
+}
+.tabs button.active { color: var(--text-primary); border-bottom-color: var(--accent-green); }
+.tabs button:hover { color: var(--text-primary); background: transparent; }
+.admin-form { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 12px; align-items: end; margin-bottom: 20px; }
+.admin-form .span-2 { grid-column: span 2; }
+.admin-form button { height: 36px; padding: 0 16px; }
+
+/* ---------- TOAST --------------------------------------------------- */
+.toast-stack { position: fixed; bottom: 20px; right: 20px; display:flex; flex-direction: column; gap:8px; z-index: 100; pointer-events: none;}
+.toast {
+  background: var(--bg-secondary); border: 1px solid var(--border-soft);
+  padding: 12px 16px; border-radius: var(--radius); font-size: 13px;
+  box-shadow: var(--shadow);
+  min-width: 240px; max-width: 380px;
+  pointer-events: auto;
+  animation: toast-in .15s ease;
+}
+.toast.ok { border-left: 3px solid var(--accent-green); }
+.toast.err { border-left: 3px solid var(--danger); }
+@keyframes toast-in { from { transform: translateY(8px); opacity: 0;} to { transform: none; opacity: 1; }}
+
+/* ---------- LOADING ------------------------------------------------- */
+.loader { display:flex; justify-content:center; padding: 60px 0; }
+.loader::after {
+  content:""; width: 30px; height: 30px; border-radius: 50%;
+  border: 3px solid var(--bg-tertiary); border-top-color: var(--accent-green);
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- MOBILE BOTTOM NAV -------------------------------------- */
+.mobnav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg-secondary); border-top: 1px solid var(--border-soft);
+  height: 60px; z-index: 50;
+  justify-content: space-around;
+  padding: 6px 8px; padding-bottom: max(6px, env(safe-area-inset-bottom));
+}
+.mobnav a {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; color: var(--text-secondary); font-size: 10px; font-weight:500;
+  text-decoration: none; border-radius: var(--radius-sm);
+}
+.mobnav a.active { color: var(--accent-green); }
+.mobnav a .ico { font-size: 18px; }
+
+/* ---------- RESPONSIVE --------------------------------------------- */
+@media (max-width: 768px) {
+  .navlinks { display: none; }
+  .mobnav { display: flex; }
+  main { padding: 18px 14px 80px; }
+  .fixture { grid-template-columns: 1fr; gap: 6px; padding: 12px; }
+  .fixture .home, .fixture .away { text-align: center; }
+  .fixture .vs { flex-direction: row; gap: 10px; justify-content: center; }
+  .bracket-progress { grid-template-columns: repeat(3, 1fr); }
+  table { font-size: 13px; }
+  th, td { padding: 8px; }
+  h1 { font-size: 22px; }
+  .stat .value { font-size: 26px; }
+}
+@media (max-width: 420px) {
+  .topnav { padding: 0 12px; }
+  .user-chip span { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* visually-hidden but reachable to screen readers */
+.sr-only { position: absolute !important; width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+</style>
+</head>
+<body>
+
+<!-- ============================== LOGIN ============================ -->
+<div id="login" class="login-wrap" hidden>
+  <form id="login-form" class="login-card" autocomplete="off" aria-labelledby="login-h">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+      <span style="font-size:28px;line-height:1;">⚽</span>
+      <div>
+        <h1 id="login-h">World Cup 2026</h1>
+        <div class="muted" style="font-size:12px;">Office Predictor</div>
+      </div>
+    </div>
+    <p class="sub">Sign in with the username and PIN your admin gave you.</p>
+    <div class="field">
+      <label for="li-user">Username</label>
+      <input id="li-user" name="username" required autocomplete="username" inputmode="text" autocapitalize="none" autofocus>
+    </div>
+    <div class="field">
+      <label for="li-pin">PIN</label>
+      <input id="li-pin" name="pin" required inputmode="numeric" pattern="[0-9]{4,12}" autocomplete="current-password" type="password" placeholder="••••••">
+    </div>
+    <button class="btn-primary" type="submit">Sign in</button>
+    <div class="err" id="li-err" role="alert" aria-live="polite"></div>
+    <div class="footer">Demo: <code>alice</code> / <code>111111</code> · admin <code>admin</code> / <code>262626</code></div>
+  </form>
+</div>
+
+<!-- ============================== APP =============================== -->
+<div id="app" class="app" hidden>
+
+  <nav class="topnav" aria-label="Main">
+    <div class="brand"><span class="dot" aria-hidden="true"></span>WC&nbsp;2026 Predictor</div>
+    <div class="navlinks">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#predict">Predict</a>
+      <a href="#bracket">Bracket</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#me">My picks</a>
+      <a href="#admin" class="admin" data-admin-only hidden>Admin</a>
+    </div>
+    <div class="spacer"></div>
+    <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle dark/light theme">🌙</button>
+    <button id="user-chip" class="user-chip" aria-label="Account">
+      <span class="avatar" id="user-avatar">--</span>
+      <span id="user-name">User</span>
+    </button>
+  </nav>
+
+  <main id="main" aria-live="polite">
+    <section id="screen-dashboard" class="screen" aria-labelledby="dash-h"></section>
+    <section id="screen-predict"   class="screen" aria-labelledby="pred-h"></section>
+    <section id="screen-bracket"   class="screen" aria-labelledby="brk-h"></section>
+    <section id="screen-leaderboard" class="screen" aria-labelledby="lb-h"></section>
+    <section id="screen-me"        class="screen" aria-labelledby="me-h"></section>
+    <section id="screen-admin"     class="screen" aria-labelledby="ad-h"></section>
+  </main>
+
+  <nav class="mobnav" aria-label="Bottom navigation">
+    <a href="#dashboard" data-mob><span class="ico">🏠</span>Home</a>
+    <a href="#predict"   data-mob><span class="ico">✏️</span>Predict</a>
+    <a href="#bracket"   data-mob><span class="ico">🏆</span>Bracket</a>
+    <a href="#leaderboard" data-mob><span class="ico">📊</span>Table</a>
+    <a href="#me"        data-mob><span class="ico">👤</span>Me</a>
+  </nav>
+</div>
+
+<div class="toast-stack" id="toasts" role="status" aria-live="polite"></div>
+
+<!-- ============================== SCRIPTS ========================== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+/* ====================================================================
+ * CONFIG  — set your Supabase URL and anon key below.
+ * ==================================================================== */
+const SUPABASE_URL  = window.WCOP_SUPABASE_URL  || 'https://knodunjnsxelmpziupwk.supabase.co';
+const SUPABASE_ANON = window.WCOP_SUPABASE_ANON || 'REPLACE_WITH_YOUR_ANON_KEY';
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+  auth: { persistSession: true, autoRefreshToken: true, storageKey: 'wcop-auth' }
+});
+
+/* ====================================================================
+ * STATE
+ * ==================================================================== */
+const state = {
+  session: null,
+  profile: null,
+  teams: [],
+  teamById: new Map(),
+  matches: [],
+  predictions: new Map(),    // match_id -> {home_score, away_score, points, exact_hit, result_hit}
+  bracketPicks: { r32:new Set(), r16:new Set(), qf:new Set(), sf:new Set(), final:new Set(), winner:new Set() },
+  bracketActuals: { r32:new Set(), r16:new Set(), qf:new Set(), sf:new Set(), final:new Set(), winner:new Set() },
+  settings: {},
+  saving: 0,
+};
+
+const BRACKET_ROUNDS = [
+  { key:'r32',    name:'Round of 32',   count:32 },
+  { key:'r16',    name:'Round of 16',   count:16 },
+  { key:'qf',     name:'Quarter-finals',count:8  },
+  { key:'sf',     name:'Semi-finals',   count:4  },
+  { key:'final',  name:'Final',         count:2  },
+  { key:'winner', name:'Champion',      count:1  },
+];
+
+const ROUND_LABEL = { group:'Group stage', r32:'Round of 32', r16:'Round of 16', qf:'Quarter-final', sf:'Semi-final', '3rd':'3rd-place', final:'Final' };
+
+/* ====================================================================
+ * HELPERS
+ * ==================================================================== */
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+function el(tag, attrs={}, children=[]) {
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v;
+    else if (k === 'html') e.innerHTML = v;
+    else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, '');
+    else if (v === false || v == null) {}
+    else e.setAttribute(k, v);
+  }
+  for (const c of (Array.isArray(children) ? children : [children])) {
+    if (c == null || c === false) continue;
+    e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  }
+  return e;
+}
+
+function fmtKickoff(iso) {
+  const d = new Date(iso);
+  return d.toLocaleString('en-GB', { weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+}
+function fmtDay(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
+}
+function isLocked(match) {
+  if (!match.kickoff_at) return false;
+  return match.status === 'locked' || match.status === 'final' || (new Date(match.kickoff_at) <= new Date());
+}
+function isScored(match) { return match.status === 'final' && match.home_score != null; }
+function bracketLocked() { return state.settings.tournament_started === true; }
+
+function toast(msg, kind='ok', ms=2600) {
+  const t = el('div', { class: `toast ${kind}` }, msg);
+  $('#toasts').appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform='translateY(-4px)'; setTimeout(()=>t.remove(),200); }, ms);
+}
+
+function avatarHTML(initials, colour) {
+  return `<span class="avatar" style="background:${colour||'#22c55e'};">${initials||'?'}</span>`;
+}
+
+/* ====================================================================
+ * DATA LOADING
+ * ==================================================================== */
+async function loadAll() {
+  const [teams, matches, settings, ba, preds, picks] = await Promise.all([
+    sb.from('teams').select('*').order('group_code').order('seed_rank'),
+    sb.from('matches').select('*').order('kickoff_at'),
+    sb.from('settings').select('*'),
+    sb.from('bracket_actuals').select('*'),
+    sb.from('predictions').select('*').eq('player_id', state.session.user.id),
+    sb.from('bracket_picks').select('*').eq('player_id', state.session.user.id),
+  ]);
+  if (teams.error)    throw teams.error;
+  if (matches.error)  throw matches.error;
+  state.teams = teams.data || [];
+  state.teamById = new Map(state.teams.map(t => [t.id, t]));
+  state.matches = matches.data || [];
+  state.settings = Object.fromEntries((settings.data||[]).map(r => [r.key, r.value]));
+  state.bracketActuals = { r32:new Set(), r16:new Set(), qf:new Set(), sf:new Set(), final:new Set(), winner:new Set() };
+  for (const row of (ba.data||[])) state.bracketActuals[row.round].add(row.team_id);
+  state.predictions = new Map((preds.data||[]).map(p => [p.match_id, p]));
+  state.bracketPicks = { r32:new Set(), r16:new Set(), qf:new Set(), sf:new Set(), final:new Set(), winner:new Set() };
+  for (const row of (picks.data||[])) state.bracketPicks[row.round].add(row.team_id);
+}
+
+async function loadProfile() {
+  const { data, error } = await sb.from('profiles').select('*').eq('id', state.session.user.id).maybeSingle();
+  if (error) throw error;
+  state.profile = data;
+}
+
+/* ====================================================================
+ * AUTH
+ * ==================================================================== */
+function pinToPassword(pin) { return pin + '-wcop2026'; }
+function usernameToEmail(u)  { return u.trim().toLowerCase() + '@wcop.local'; }
+
+async function login(username, pin) {
+  const email = usernameToEmail(username);
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pinToPassword(pin) });
+  if (error) throw new Error('Invalid username or PIN.');
+  return data;
+}
+async function logout() {
+  await sb.auth.signOut();
+  location.hash = '';
+  location.reload();
+}
+
+/* ====================================================================
+ * ROUTING
+ * ==================================================================== */
+const ROUTES = ['dashboard','predict','bracket','leaderboard','me','admin'];
+function route() {
+  let r = (location.hash || '#dashboard').replace('#','').split('?')[0];
+  if (!ROUTES.includes(r)) r = 'dashboard';
+  if (r === 'admin' && !state.profile?.is_admin) r = 'dashboard';
+  $$('.screen').forEach(s => s.classList.toggle('active', s.id === `screen-${r}`));
+  $$('.navlinks a, .mobnav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${r}`));
+  const fn = { dashboard:renderDashboard, predict:renderPredict, bracket:renderBracket, leaderboard:renderLeaderboard, me:renderMe, admin:renderAdmin }[r];
+  fn && fn();
+  window.scrollTo({ top:0, behavior:'instant' });
+}
+
+/* ====================================================================
+ * DASHBOARD
+ * ==================================================================== */
+async function renderDashboard() {
+  const root = $('#screen-dashboard');
+  root.innerHTML = '<div class="loader" aria-label="Loading"></div>';
+
+  // fetch leaderboard for rank & stats
+  const { data: lb } = await sb.from('leaderboard').select('*').order('rank');
+  const meRow = (lb||[]).find(r => r.id === state.session.user.id);
+  const myRank = meRow?.rank || '—';
+  const myMatchPts = meRow?.match_points || 0;
+  const myBrkPts = meRow?.bracket_points || 0;
+  const totalPlayers = (lb||[]).length;
+
+  const now = Date.now();
+  const upcoming = state.matches
+    .filter(m => m.kickoff_at && new Date(m.kickoff_at).getTime() > now - 2*3600*1000 && m.status !== 'final')
+    .sort((a,b) => new Date(a.kickoff_at) - new Date(b.kickoff_at))
+    .slice(0, 5);
+
+  const myPredCount = Array.from(state.predictions.values()).length;
+  const totalMatches = state.matches.length;
+
+  root.innerHTML = '';
+  root.appendChild(el('h1', { id:'dash-h' }, `Hi ${state.profile.display_name.split(' ')[0]} 👋`));
+  root.appendChild(el('p', { class:'sub' }, `Welcome to the World Cup 2026 office pool. Your rank: #${myRank} of ${totalPlayers}.`));
+
+  // stat grid
+  const grid = el('div', { class:'cards-grid' });
+  grid.appendChild(statCard('Total points', myMatchPts + myBrkPts, `${myMatchPts} match · ${myBrkPts} bracket`));
+  grid.appendChild(statCard('Rank', `#${myRank}`, `of ${totalPlayers} players`));
+  grid.appendChild(statCard('Predictions made', `${myPredCount} / ${totalMatches}`, ''));
+  grid.appendChild(statCard('Exact scores', meRow?.exact_scores || 0, `${meRow?.correct_results || 0} correct results`));
+  root.appendChild(grid);
+
+  // upcoming
+  root.appendChild(el('div', { class:'section-head' }, [
+    el('h2', {}, 'Next fixtures'),
+    el('a', { href:'#predict', class:'muted' }, 'See all →'),
+  ]));
+  if (!upcoming.length) {
+    root.appendChild(el('div', { class:'card muted' }, 'No upcoming fixtures.'));
+  } else {
+    const list = el('div');
+    upcoming.forEach(m => list.appendChild(fixtureRow(m, /*inputs*/ true)));
+    root.appendChild(list);
+  }
+
+  // bracket status
+  const brkDone = Object.values(state.bracketPicks).reduce((a,s)=>a+s.size, 0);
+  const brkLocked = bracketLocked();
+  root.appendChild(el('div', { class:'card', style:'margin-top:16px;' }, [
+    el('h2', { style:'margin-top:0;' }, 'Your bracket'),
+    el('p', { class:'muted', style:'margin:0 0 10px;' },
+      brkLocked
+        ? `Locked. You picked ${brkDone} teams across the knockout stages.`
+        : `${brkDone} picks made. Finish before kickoff of the first match to score bracket points.`),
+    el('a', { href:'#bracket', class:'btn btn-sm' }, brkLocked ? 'Review picks' : 'Edit bracket →'),
+  ]));
+}
+
+function statCard(label, value, delta) {
+  const c = el('div', { class:'card stat' }, [
+    el('div', { class:'label' }, label),
+    el('div', { class:'value' }, String(value)),
+  ]);
+  if (delta) c.appendChild(el('div', { class:'delta' }, delta));
+  return c;
+}
+
+/* ====================================================================
+ * PREDICT
+ * ==================================================================== */
+function renderPredict() {
+  const root = $('#screen-predict');
+  root.innerHTML = '';
+  root.appendChild(el('h1', { id:'pred-h' }, 'Match predictions'));
+  root.appendChild(el('p', { class:'sub' }, '3 points for exact score · 1 point for correct result · Predictions lock at kickoff.'));
+
+  // toggle: all, unfilled, locked
+  const filterBar = el('div', { class:'tabs', role:'tablist' });
+  const filters = [
+    { k:'open',   label:'Open (no prediction)' },
+    { k:'todo',   label:'Open (all)' },
+    { k:'locked', label:'Locked' },
+    { k:'all',    label:'All' },
+  ];
+  let active = 'open';
+  const listEl = el('div');
+
+  function applyFilter() {
+    listEl.innerHTML = '';
+    const groups = new Map();
+    state.matches.forEach(m => {
+      const locked = isLocked(m);
+      const has = state.predictions.has(m.id);
+      if (active === 'open'   && (locked || has)) return;
+      if (active === 'todo'   &&  locked)         return;
+      if (active === 'locked' && !locked)         return;
+      const day = (m.kickoff_at||'').slice(0,10);
+      if (!groups.has(day)) groups.set(day, []);
+      groups.get(day).push(m);
+    });
+    if (!groups.size) {
+      listEl.appendChild(el('div', { class:'card muted' }, 'Nothing to show in this view.'));
+      return;
+    }
+    [...groups.keys()].sort().forEach(day => {
+      const head = el('div', { class:'section-head' }, [
+        el('h2', {}, fmtDay(day + 'T12:00:00Z')),
+        el('div', { class:'meta' }, `${groups.get(day).length} matches`)
+      ]);
+      listEl.appendChild(head);
+      groups.get(day).forEach(m => listEl.appendChild(fixtureRow(m, true)));
+    });
+  }
+
+  filters.forEach(f => {
+    const b = el('button', { type:'button', role:'tab', 'aria-selected': String(f.k===active) }, f.label);
+    if (f.k === active) b.classList.add('active');
+    b.addEventListener('click', () => {
+      active = f.k;
+      filterBar.querySelectorAll('button').forEach(btn => { btn.classList.remove('active'); btn.setAttribute('aria-selected','false'); });
+      b.classList.add('active'); b.setAttribute('aria-selected','true');
+      applyFilter();
+    });
+    filterBar.appendChild(b);
+  });
+  root.appendChild(filterBar);
+  root.appendChild(listEl);
+  applyFilter();
+}
+
+function fixtureRow(m, inputs=false) {
+  const home = state.teamById.get(m.home_team_id);
+  const away = state.teamById.get(m.away_team_id);
+  const locked = isLocked(m);
+  const scored = isScored(m);
+  const pred = state.predictions.get(m.id);
+
+  const row = el('div', { class:`fixture ${locked?'locked':''} ${scored?'scored':''}`, role:'group', 'aria-label': `${(home?.name||'TBC')} vs ${(away?.name||'TBC')}` });
+  row.appendChild(el('div', { class:'home' }, [
+    el('span', {}, (home?.name||'TBC')),
+    el('span', { class:'flag' }, home?.flag_emoji||'')
+  ]));
+
+  row.appendChild(el('div', { class:'vs' }, [
+    el('span', { class:'pill' }, ROUND_LABEL[m.round] + (m.group_code?` · Grp ${m.group_code}`:'')),
+    el('span', { class:'kickoff' }, m.kickoff_at ? fmtKickoff(m.kickoff_at) : ''),
+    scored ? el('span', { class:'pill scored' }, 'FT')
+           : (locked ? el('span', { class:'pill locked' }, 'Locked') : el('span', { class:'pill' }, 'Open')),
+  ]));
+
+  if (scored) {
+    row.appendChild(el('div', { class:'result' }, `${m.home_score} – ${m.away_score}`));
+  } else if (inputs && !locked) {
+    const hInp = el('input', { type:'number', min:0, max:20, inputmode:'numeric', 'aria-label': `${home?.name||'home'} score`, value: pred?.home_score ?? '' });
+    const aInp = el('input', { type:'number', min:0, max:20, inputmode:'numeric', 'aria-label': `${away?.name||'away'} score`, value: pred?.away_score ?? '' });
+    const save = () => savePrediction(m.id, hInp.value, aInp.value, row);
+    hInp.addEventListener('change', save);
+    aInp.addEventListener('change', save);
+    hInp.addEventListener('blur',   save);
+    aInp.addEventListener('blur',   save);
+    row.appendChild(el('div', { class:'pred' }, [ hInp, el('span', { class:'dash' }, '–'), aInp ]));
+  } else if (pred) {
+    row.appendChild(el('div', { class:'result muted' }, `${pred.home_score} – ${pred.away_score}`));
+  } else {
+    row.appendChild(el('div', { class:'result muted' }, '— – —'));
+  }
+
+  row.appendChild(el('div', { class:'away' }, [
+    el('span', { class:'flag' }, away?.flag_emoji||''),
+    el('span', {}, (away?.name||'TBC'))
+  ]));
+
+  // show points pill if scored & user predicted
+  if (scored && pred) {
+    const tag = pred.exact_hit ? el('span', { class:'pill exact' }, '+3 exact')
+              : pred.result_hit ? el('span', { class:'pill scored' }, '+1 result')
+              : el('span', { class:'pill locked' }, '0');
+    row.appendChild(el('div', { class:'meta', style:'grid-column:1/-1;text-align:center;margin-top:4px;' }, [
+      `Your pick: ${pred.home_score}–${pred.away_score} · `, tag
+    ]));
+  }
+  return row;
+}
+
+async function savePrediction(matchId, h, a, row) {
+  h = String(h).trim(); a = String(a).trim();
+  if (h === '' || a === '') return; // ignore partial entries
+  const hi = parseInt(h, 10), ai = parseInt(a, 10);
+  if (Number.isNaN(hi) || Number.isNaN(ai) || hi < 0 || ai < 0) {
+    toast('Scores must be 0 or higher', 'err'); return;
+  }
+  state.saving++;
+  const payload = { player_id: state.session.user.id, match_id: matchId, home_score: hi, away_score: ai };
+  const { error } = await sb.from('predictions').upsert(payload, { onConflict: 'player_id,match_id' });
+  state.saving--;
+  if (error) {
+    if ((error.message||'').toLowerCase().includes('locked') || error.code === '42501')
+      toast('That match is locked.', 'err');
+    else toast('Save failed: ' + error.message, 'err');
+    return;
+  }
+  state.predictions.set(matchId, { ...payload, points:0, exact_hit:false, result_hit:false });
+  if (row) { row.style.outline = '2px solid var(--accent-green)'; setTimeout(()=>row.style.outline='', 600); }
+}
+
+/* ====================================================================
+ * BRACKET
+ * ==================================================================== */
+function renderBracket() {
+  const root = $('#screen-bracket');
+  root.innerHTML = '';
+  root.appendChild(el('h1', { id:'brk-h' }, 'Bracket predictor'));
+  const locked = bracketLocked();
+  root.appendChild(el('p', { class:'sub' },
+    locked
+      ? 'Bracket entry is locked because the tournament has started. Showing your saved picks.'
+      : 'For each round, pick the teams you think will reach it. 1 point per correct team per round. Picks save automatically.'
+  ));
+
+  // progress
+  const prog = el('div', { class:'bracket-progress', 'aria-label':'Bracket progress' });
+  BRACKET_ROUNDS.forEach(r => {
+    const got = state.bracketPicks[r.key].size;
+    const step = el('div', { class:`step ${got===r.count?'done':''}` }, [
+      el('div', { class:'stage' }, r.name),
+      el('div', { class:'count' }, `${got}/${r.count}`),
+    ]);
+    prog.appendChild(step);
+  });
+  root.appendChild(prog);
+
+  BRACKET_ROUNDS.forEach(r => root.appendChild(bracketStage(r, locked)));
+}
+
+function bracketStage(round, locked) {
+  const wrap = el('div', { class:'bracket-section', 'aria-labelledby': `brk-h-${round.key}` });
+
+  const picked = state.bracketPicks[round.key];
+  const overCls = picked.size > round.count ? 'over' : '';
+  wrap.appendChild(el('div', { class:'section-head' }, [
+    el('h2', { id:`brk-h-${round.key}` }, round.name),
+    el('div', { class:'meta' }, [
+      el('span', { class:`picked-count ${overCls}` }, `${picked.size}`),
+      ` / ${round.count} picked`
+    ]),
+  ]));
+
+  // Source pool: for r32 = all 48 teams. For deeper rounds = the previous-round picks (your own bracket).
+  let pool;
+  if (round.key === 'r32') pool = state.teams.slice();
+  else {
+    const prev = BRACKET_ROUNDS[BRACKET_ROUNDS.findIndex(r => r.key === round.key) - 1].key;
+    const prevPicks = state.bracketPicks[prev];
+    pool = state.teams.filter(t => prevPicks.has(t.id));
+    if (!pool.length) {
+      wrap.appendChild(el('p', { class:'rule muted' }, `Pick your ${BRACKET_ROUNDS[BRACKET_ROUNDS.findIndex(r => r.key === round.key) - 1].name} teams above first.`));
+      return wrap;
+    }
+  }
+
+  const grid = el('div', { class:'team-grid' });
+  pool.sort((a,b) => a.group_code.localeCompare(b.group_code) || a.seed_rank - b.seed_rank);
+  pool.forEach(t => grid.appendChild(teamPickBtn(t, round, locked)));
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+function teamPickBtn(team, round, locked) {
+  const picks = state.bracketPicks[round.key];
+  const actuals = state.bracketActuals[round.key];
+  const picked = picks.has(team.id);
+  const tournamentStarted = bracketLocked();
+  const isAlive = tournamentStarted && picked && actuals.has(team.id);
+  const isDead  = tournamentStarted && picked && !actuals.has(team.id) && actualsKnownForRound(round.key);
+  const btn = el('button', {
+    type:'button',
+    class:`team-pick ${picked?'picked':''} ${isAlive?'alive':''} ${isDead?'dead':''} ${locked?'disabled':''}`,
+    'aria-pressed': String(picked),
+    disabled: locked,
+  }, [
+    el('span', { class:'flag' }, team.flag_emoji),
+    el('span', {}, team.name),
+    el('span', { class:'grp' }, team.group_code),
+  ]);
+  if (!locked) btn.addEventListener('click', () => toggleBracketPick(team, round, btn));
+  return btn;
+}
+function actualsKnownForRound(roundKey) {
+  return state.bracketActuals[roundKey].size > 0;
+}
+
+async function toggleBracketPick(team, round, btn) {
+  const picks = state.bracketPicks[round.key];
+  const adding = !picks.has(team.id);
+  if (adding && picks.size >= round.count) {
+    toast(`You've already picked ${round.count} for ${round.name}. Unpick one first.`, 'err'); return;
+  }
+  if (adding) {
+    const { error } = await sb.from('bracket_picks').insert({
+      player_id: state.session.user.id, round: round.key, team_id: team.id
+    });
+    if (error) { toast('Save failed: ' + error.message, 'err'); return; }
+    picks.add(team.id);
+  } else {
+    const { error } = await sb.from('bracket_picks').delete()
+      .eq('player_id', state.session.user.id).eq('round', round.key).eq('team_id', team.id);
+    if (error) { toast('Save failed: ' + error.message, 'err'); return; }
+    picks.delete(team.id);
+    // also remove from later rounds if we just unpicked
+    const idx = BRACKET_ROUNDS.findIndex(r => r.key === round.key);
+    for (let j = idx+1; j < BRACKET_ROUNDS.length; j++) {
+      const k = BRACKET_ROUNDS[j].key;
+      if (state.bracketPicks[k].has(team.id)) {
+        await sb.from('bracket_picks').delete()
+          .eq('player_id', state.session.user.id).eq('round', k).eq('team_id', team.id);
+        state.bracketPicks[k].delete(team.id);
+      }
+    }
+  }
+  renderBracket();
+}
+
+/* ====================================================================
+ * LEADERBOARD
+ * ==================================================================== */
+async function renderLeaderboard() {
+  const root = $('#screen-leaderboard');
+  root.innerHTML = '<div class="loader"></div>';
+  const { data, error } = await sb.from('leaderboard').select('*').order('rank');
+  if (error) { root.innerHTML = `<div class="card">Error: ${error.message}</div>`; return; }
+
+  root.innerHTML = '';
+  root.appendChild(el('h1', { id:'lb-h' }, 'Leaderboard'));
+  root.appendChild(el('p', { class:'sub' }, 'Updated whenever an admin enters a match result. Tie-breakers: exact scores → correct results → bracket points.'));
+
+  const actions = el('div', { style:'display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px;' }, [
+    el('button', { class:'btn btn-sm', onclick: () => exportCSV(data) }, 'Export CSV'),
+  ]);
+  root.appendChild(actions);
+
+  const tbl = el('table', { class:'leaderboard' });
+  tbl.appendChild(el('thead', {}, el('tr', {}, [
+    el('th', {}, '#'),
+    el('th', {}, 'Player'),
+    el('th', { class:'num' }, 'Match'),
+    el('th', { class:'num' }, 'Bracket'),
+    el('th', { class:'num' }, 'Total'),
+    el('th', { class:'num' }, 'Exact'),
+    el('th', { class:'num' }, 'Correct'),
+  ])));
+  const tb = el('tbody');
+  (data||[]).forEach(r => {
+    const tr = el('tr', { class: `rank-${r.rank} ${r.id===state.session.user.id?'me':''}` });
+    tr.appendChild(el('td', { class:'rank' }, '#'+r.rank));
+    const player = el('td', { class:'player', html: `${avatarHTML(r.initials, r.avatar_colour)}<span>${r.display_name}</span>` });
+    tr.appendChild(player);
+    tr.appendChild(el('td', { class:'num' }, String(r.match_points)));
+    tr.appendChild(el('td', { class:'num' }, String(r.bracket_points)));
+    tr.appendChild(el('td', { class:'num' }, el('strong', {}, String(r.total_points))));
+    tr.appendChild(el('td', { class:'num' }, String(r.exact_scores)));
+    tr.appendChild(el('td', { class:'num' }, String(r.correct_results)));
+    tb.appendChild(tr);
+  });
+  tbl.appendChild(tb);
+  root.appendChild(el('div', { class:'card', style:'padding:0;overflow:auto;' }, tbl));
+}
+
+function exportCSV(rows) {
+  const header = ['rank','username','display_name','match_points','bracket_points','total_points','exact_scores','correct_results'];
+  const csv = [header.join(',')].concat((rows||[]).map(r => header.map(h => JSON.stringify(r[h] ?? '')).join(','))).join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = el('a', { href: url, download: `wcop-leaderboard-${new Date().toISOString().slice(0,10)}.csv` });
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+
+/* ====================================================================
+ * MY PICKS
+ * ==================================================================== */
+function renderMe() {
+  const root = $('#screen-me');
+  root.innerHTML = '';
+  root.appendChild(el('h1', { id:'me-h' }, 'My picks & breakdown'));
+  root.appendChild(el('p', { class:'sub' }, 'Your prediction history and bracket status.'));
+
+  // stats
+  const finals = state.matches.filter(m => m.status === 'final');
+  const myFinishedPreds = finals.map(m => state.predictions.get(m.id)).filter(Boolean);
+  const matchPts = myFinishedPreds.reduce((a,p) => a + (p.points||0), 0);
+  const exact = myFinishedPreds.filter(p => p.exact_hit).length;
+  const correct = myFinishedPreds.filter(p => p.result_hit).length;
+  let brkPts = 0;
+  for (const r of BRACKET_ROUNDS) {
+    state.bracketPicks[r.key].forEach(id => { if (state.bracketActuals[r.key].has(id)) brkPts++; });
+  }
+  const grid = el('div', { class:'cards-grid' });
+  grid.appendChild(statCard('Match points', matchPts, `${exact} exact · ${correct} correct`));
+  grid.appendChild(statCard('Bracket points', brkPts, `out of 63 possible`));
+  grid.appendChild(statCard('Total', matchPts + brkPts, ''));
+  root.appendChild(grid);
+
+  // mini form: last 5 scored
+  const last5 = finals.slice().sort((a,b) => new Date(b.kickoff_at) - new Date(a.kickoff_at)).slice(0,5);
+  root.appendChild(el('h2', {}, 'Form (last 5 scored)'));
+  if (!last5.length) {
+    root.appendChild(el('div', { class:'card muted' }, 'No scored matches yet.'));
+  } else {
+    const formCard = el('div', { class:'card', style:'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' });
+    last5.forEach(m => {
+      const p = state.predictions.get(m.id);
+      const cls = !p ? 'locked' : p.exact_hit ? 'exact' : p.result_hit ? 'scored' : 'locked';
+      const tag = !p ? '–' : p.exact_hit ? '3' : p.result_hit ? '1' : '0';
+      formCard.appendChild(el('span', { class:`pill ${cls}`, title: m.kickoff_at }, tag));
+    });
+    root.appendChild(formCard);
+  }
+
+  // breakdown table (scored matches only)
+  root.appendChild(el('h2', {}, 'Scored matches'));
+  if (!finals.length) {
+    root.appendChild(el('div', { class:'card muted' }, 'No results yet.'));
+  } else {
+    const tbl = el('table');
+    tbl.appendChild(el('thead', {}, el('tr', {}, [
+      el('th', {}, 'Match'),
+      el('th', { class:'num' }, 'Result'),
+      el('th', { class:'num' }, 'Your pick'),
+      el('th', { class:'num' }, 'Points'),
+    ])));
+    const tb = el('tbody');
+    finals.sort((a,b) => new Date(b.kickoff_at) - new Date(a.kickoff_at)).forEach(m => {
+      const home = state.teamById.get(m.home_team_id), away = state.teamById.get(m.away_team_id);
+      const p = state.predictions.get(m.id);
+      const tr = el('tr');
+      tr.appendChild(el('td', {}, `${home?.name||'TBC'} vs ${away?.name||'TBC'}`));
+      tr.appendChild(el('td', { class:'num' }, `${m.home_score}–${m.away_score}`));
+      tr.appendChild(el('td', { class:'num muted' }, p ? `${p.home_score}–${p.away_score}` : '—'));
+      const cls = !p ? '' : p.exact_hit ? 'exact' : p.result_hit ? 'scored' : 'locked';
+      tr.appendChild(el('td', { class:'num' }, p ? el('span',{ class:`pill ${cls}` }, `+${p.points}`) : '—'));
+      tb.appendChild(tr);
+    });
+    tbl.appendChild(tb);
+    root.appendChild(el('div', { class:'card', style:'padding:0;overflow:auto;' }, tbl));
+  }
+
+  // bracket alive/eliminated
+  root.appendChild(el('h2', {}, 'Bracket status'));
+  if (Object.values(state.bracketPicks).every(s => !s.size)) {
+    root.appendChild(el('div', { class:'card muted' }, 'No bracket picks yet. Go to the Bracket screen.'));
+  } else {
+    BRACKET_ROUNDS.forEach(r => {
+      const picks = state.bracketPicks[r.key];
+      if (!picks.size) return;
+      const card = el('div', { class:'card', style:'margin-top:10px;' });
+      card.appendChild(el('h3', {}, r.name));
+      const known = state.bracketActuals[r.key].size > 0;
+      const grid2 = el('div', { class:'team-grid' });
+      picks.forEach(id => {
+        const t = state.teamById.get(id); if (!t) return;
+        const alive = known && state.bracketActuals[r.key].has(id);
+        const dead  = known && !alive;
+        grid2.appendChild(el('span', {
+          class:`team-pick ${alive?'alive':''} ${dead?'dead':''}`,
+          'aria-label': `${t.name} – ${alive?'still in':dead?'eliminated':'awaiting result'}`
+        }, [
+          el('span', { class:'flag' }, t.flag_emoji),
+          el('span', {}, t.name),
+          el('span', { class:'grp' }, t.group_code),
+        ]));
+      });
+      card.appendChild(grid2);
+      root.appendChild(card);
+    });
+  }
+}
+
+/* ====================================================================
+ * ADMIN
+ * ==================================================================== */
+function renderAdmin() {
+  const root = $('#screen-admin');
+  root.innerHTML = '';
+  if (!state.profile.is_admin) { root.innerHTML = '<div class="card">Admin only.</div>'; return; }
+  root.appendChild(el('h1', { id:'ad-h' }, 'Admin'));
+  root.appendChild(el('p', { class:'sub' }, 'Manage players, teams, fixtures, and results. Changes are immediate.'));
+
+  const tabs = ['Players','Teams','Fixtures','Results','Bracket','Tools'];
+  const tabBar = el('div', { class:'tabs', role:'tablist' });
+  const body = el('div');
+  let activeTab = 'Players';
+  function setTab(t) {
+    activeTab = t;
+    tabBar.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.textContent === t));
+    body.innerHTML = '';
+    ({ Players:adminPlayers, Teams:adminTeams, Fixtures:adminFixtures, Results:adminResults, Bracket:adminBracket, Tools:adminTools }[t])(body);
+  }
+  tabs.forEach(t => {
+    const b = el('button', { type:'button', role:'tab' }, t);
+    if (t === activeTab) b.classList.add('active');
+    b.addEventListener('click', () => setTab(t));
+    tabBar.appendChild(b);
+  });
+  root.appendChild(tabBar);
+  root.appendChild(body);
+  setTab('Players');
+}
+
+async function adminPlayers(root) {
+  root.appendChild(el('h2', {}, 'Add player'));
+  const form = el('div', { class:'admin-form' });
+  const uIn = el('input', { type:'text', placeholder:'username (lowercase)', required:true });
+  const pIn = el('input', { type:'text', placeholder:'PIN (4–8 digits)', required:true });
+  const dIn = el('input', { type:'text', placeholder:'Display name', required:true });
+  const aIn = el('select', {}, [el('option', { value:'false' }, 'Player'), el('option', { value:'true' }, 'Admin')]);
+  const btn = el('button', { class:'btn-primary' }, 'Create');
+  btn.addEventListener('click', async () => {
+    if (!uIn.value || !pIn.value || !dIn.value) return toast('All fields required', 'err');
+    btn.disabled = true;
+    const { error } = await sb.rpc('admin_create_player', {
+      p_username: uIn.value.trim(), p_pin: pIn.value.trim(),
+      p_display_name: dIn.value.trim(), p_is_admin: aIn.value === 'true'
+    });
+    btn.disabled = false;
+    if (error) return toast(error.message, 'err');
+    toast('Player created');
+    uIn.value = pIn.value = dIn.value = '';
+    loadPlayersTable();
+  });
+  form.append(uIn, pIn, dIn, aIn, btn);
+  root.appendChild(form);
+
+  root.appendChild(el('h2', {}, 'Players'));
+  const list = el('div'); root.appendChild(list);
+
+  async function loadPlayersTable() {
+    list.innerHTML = '<div class="loader"></div>';
+    const { data, error } = await sb.from('profiles').select('*').order('display_name');
+    if (error) { list.innerHTML = `<div class="card">Error: ${error.message}</div>`; return; }
+    list.innerHTML = '';
+    const tbl = el('table');
+    tbl.appendChild(el('thead', {}, el('tr', {}, [
+      el('th', {}, 'Username'), el('th', {}, 'Display name'), el('th', {}, 'Role'), el('th', {}, ''),
+    ])));
+    const tb = el('tbody');
+    (data||[]).forEach(p => {
+      const tr = el('tr');
+      tr.appendChild(el('td', {}, p.username));
+      tr.appendChild(el('td', {}, p.display_name));
+      tr.appendChild(el('td', {}, p.is_admin ? el('span',{ class:'pill gold' },'Admin') : 'Player'));
+      const acts = el('td', { style:'text-align:right;display:flex;gap:6px;justify-content:flex-end;' });
+      const pinBtn = el('button', { class:'btn-sm' }, 'Reset PIN');
+      pinBtn.addEventListener('click', async () => {
+        const np = prompt(`New PIN for ${p.username}:`);
+        if (!np) return;
+        const { error } = await sb.rpc('admin_reset_pin', { p_username: p.username, p_new_pin: np });
+        if (error) toast(error.message, 'err'); else toast('PIN reset');
+      });
+      const delBtn = el('button', { class:'btn-sm btn-danger' }, 'Delete');
+      delBtn.addEventListener('click', async () => {
+        if (!confirm(`Delete ${p.display_name}? This removes their account and all picks.`)) return;
+        const { error } = await sb.rpc('admin_delete_player', { p_username: p.username });
+        if (error) toast(error.message, 'err'); else { toast('Deleted'); loadPlayersTable(); }
+      });
+      acts.append(pinBtn, delBtn);
+      tr.appendChild(acts);
+      tb.appendChild(tr);
+    });
+    tbl.appendChild(tb);
+    list.appendChild(el('div', { class:'card', style:'padding:0;overflow:auto;' }, tbl));
+  }
+  loadPlayersTable();
+}
+
+async function adminTeams(root) {
+  root.appendChild(el('h2', {}, 'Teams'));
+  root.appendChild(el('p', { class:'muted', style:'margin-top:0' }, 'Edit team names, group codes, and flags inline. Press Enter to save.'));
+  const list = el('div'); root.appendChild(list);
+  const { data } = await sb.from('teams').select('*').order('group_code').order('seed_rank');
+  const tbl = el('table');
+  tbl.appendChild(el('thead', {}, el('tr', {}, [
+    el('th',{},'Code'), el('th',{},'Name'), el('th',{},'Group'), el('th',{},'Flag'), el('th',{},'Seed'),
+  ])));
+  const tb = el('tbody');
+  (data||[]).forEach(t => {
+    const tr = el('tr');
+    function inp(field, type='text') {
+      const i = el('input', { type, value: t[field] ?? '' });
+      i.addEventListener('change', async () => {
+        const val = type==='number' ? parseInt(i.value,10) : i.value;
+        const { error } = await sb.from('teams').update({ [field]: val }).eq('id', t.id);
+        if (error) toast(error.message, 'err'); else toast('Saved');
+        if (!error) { t[field] = val; state.teamById.set(t.id, t); }
+      });
+      return i;
+    }
+    tr.appendChild(el('td',{}, inp('code')));
+    tr.appendChild(el('td',{}, inp('name')));
+    tr.appendChild(el('td',{}, inp('group_code')));
+    tr.appendChild(el('td',{}, inp('flag_emoji')));
+    tr.appendChild(el('td',{}, inp('seed_rank','number')));
+    tb.appendChild(tr);
+  });
+  tbl.appendChild(tb);
+  list.appendChild(el('div', { class:'card', style:'padding:0;overflow:auto;' }, tbl));
+}
+
+async function adminFixtures(root) {
+  root.appendChild(el('h2', {}, 'Fixtures'));
+  root.appendChild(el('p', { class:'muted', style:'margin-top:0' }, 'Edit kickoff times and home/away teams. Round picker lets you fill knockout placeholders.'));
+  const list = el('div'); root.appendChild(list);
+  const { data } = await sb.from('matches').select('*').order('match_no');
+  const tbl = el('table');
+  tbl.appendChild(el('thead', {}, el('tr', {}, [
+    el('th',{},'#'), el('th',{},'Round'), el('th',{},'Group'), el('th',{},'Home'), el('th',{},'Away'), el('th',{},'Kickoff (UTC)'),
+  ])));
+  const tb = el('tbody');
+  (data||[]).forEach(m => {
+    const tr = el('tr');
+    tr.appendChild(el('td',{}, String(m.match_no)));
+    tr.appendChild(el('td',{}, ROUND_LABEL[m.round]||m.round));
+    tr.appendChild(el('td',{}, m.group_code||''));
+    function teamSelect(field) {
+      const sel = el('select', {}, [el('option',{ value:'' },'— TBC —')].concat(
+        state.teams.map(t => el('option', { value: t.id, selected: t.id===m[field] }, `${t.code} · ${t.name}`))
+      ));
+      sel.addEventListener('change', async () => {
+        const v = sel.value || null;
+        const { error } = await sb.from('matches').update({ [field]: v }).eq('id', m.id);
+        if (error) toast(error.message, 'err'); else { m[field] = v; toast('Saved'); }
+      });
+      return sel;
+    }
+    tr.appendChild(el('td',{}, teamSelect('home_team_id')));
+    tr.appendChild(el('td',{}, teamSelect('away_team_id')));
+    const dt = el('input', { type:'datetime-local', value: m.kickoff_at ? new Date(m.kickoff_at).toISOString().slice(0,16) : '' });
+    dt.addEventListener('change', async () => {
+      const iso = new Date(dt.value).toISOString();
+      const { error } = await sb.from('matches').update({ kickoff_at: iso }).eq('id', m.id);
+      if (error) toast(error.message, 'err'); else { m.kickoff_at = iso; toast('Saved'); }
+    });
+    tr.appendChild(el('td',{}, dt));
+    tb.appendChild(tr);
+  });
+  tbl.appendChild(tb);
+  list.appendChild(el('div', { class:'card', style:'padding:0;overflow:auto;' }, tbl));
+}
+
+async function adminResults(root) {
+  root.appendChild(el('h2', {}, 'Enter results'));
+  root.appendChild(el('p', { class:'muted', style:'margin-top:0' }, 'Type the home and away score, then press Save. Scoring runs immediately and the leaderboard updates.'));
+  const list = el('div'); root.appendChild(list);
+  const { data } = await sb.from('matches').select('*').order('kickoff_at');
+  const tbl = el('table');
+  tbl.appendChild(el('thead', {}, el('tr', {}, [
+    el('th',{},'#'), el('th',{},'Round'), el('th',{},'Match'), el('th',{},'Kickoff'), el('th',{},'Home'), el('th',{},'Away'), el('th',{},'Status'), el('th',{},''),
+  ])));
+  const tb = el('tbody');
+  (data||[]).forEach(m => {
+    const home = state.teamById.get(m.home_team_id), away = state.teamById.get(m.away_team_id);
+    const tr = el('tr');
+    tr.appendChild(el('td',{}, String(m.match_no)));
+    tr.appendChild(el('td',{}, ROUND_LABEL[m.round]||m.round));
+    tr.appendChild(el('td',{}, `${home?.name||'TBC'} vs ${away?.name||'TBC'}`));
+    tr.appendChild(el('td',{ class:'muted' }, m.kickoff_at ? fmtKickoff(m.kickoff_at) : ''));
+    const hIn = el('input', { type:'number', min:0, max:20, value: m.home_score ?? '' });
+    const aIn = el('input', { type:'number', min:0, max:20, value: m.away_score ?? '' });
+    tr.appendChild(el('td',{}, hIn));
+    tr.appendChild(el('td',{}, aIn));
+    tr.appendChild(el('td',{}, el('span',{class:`pill ${m.status==='final'?'scored':''}`}, m.status)));
+    const save = el('button', { class:'btn-sm btn-primary' }, 'Save');
+    save.addEventListener('click', async () => {
+      const hs = hIn.value === '' ? null : parseInt(hIn.value,10);
+      const as = aIn.value === '' ? null : parseInt(aIn.value,10);
+      if (hs == null || as == null) { toast('Both scores required', 'err'); return; }
+      save.disabled = true;
+      const { error } = await sb.from('matches').update({ home_score: hs, away_score: as, status: 'final' }).eq('id', m.id);
+      if (error) { save.disabled = false; toast(error.message, 'err'); return; }
+      await sb.rpc('recalc_match', { p_match_id: m.id });
+      save.disabled = false;
+      toast('Result saved & scored');
+      m.home_score = hs; m.away_score = as; m.status = 'final';
+    });
+    tr.appendChild(el('td',{}, save));
+    tb.appendChild(tr);
+  });
+  tbl.appendChild(tb);
+  list.appendChild(el('div', { class:'card', style:'padding:0;overflow:auto;' }, tbl));
+}
+
+async function adminBracket(root) {
+  root.appendChild(el('h2', {}, 'Bracket actuals'));
+  root.appendChild(el('p', { class:'muted', style:'margin-top:0' }, 'For each round, tick the teams that actually reached it. Click "Recalculate bracket" after each round closes.'));
+
+  for (const r of BRACKET_ROUNDS) {
+    const card = el('div', { class:'card', style:'margin-bottom:10px;' });
+    card.appendChild(el('h3', {}, r.name + ` — ${state.bracketActuals[r.key].size}/${r.count}`));
+    const grid = el('div', { class:'team-grid' });
+    state.teams.slice().sort((a,b)=>a.group_code.localeCompare(b.group_code)||a.seed_rank-b.seed_rank).forEach(t => {
+      const on = state.bracketActuals[r.key].has(t.id);
+      const btn = el('button', {
+        type:'button', class:`team-pick ${on?'alive':''}`, 'aria-pressed': String(on)
+      }, [
+        el('span', { class:'flag' }, t.flag_emoji),
+        el('span', {}, t.name),
+        el('span', { class:'grp' }, t.group_code),
+      ]);
+      btn.addEventListener('click', async () => {
+        if (state.bracketActuals[r.key].has(t.id)) {
+          const { error } = await sb.from('bracket_actuals').delete().eq('round', r.key).eq('team_id', t.id);
+          if (!error) state.bracketActuals[r.key].delete(t.id);
+        } else {
+          const { error } = await sb.from('bracket_actuals').insert({ round: r.key, team_id: t.id });
+          if (!error) state.bracketActuals[r.key].add(t.id);
+        }
+        renderAdmin(); // re-render to refresh counts
+        $$('.tabs button').forEach(b => { if (b.textContent==='Bracket') b.click(); });
+      });
+      grid.appendChild(btn);
+    });
+    card.appendChild(grid);
+    root.appendChild(card);
+  }
+}
+
+async function adminTools(root) {
+  root.appendChild(el('h2', {}, 'Tools'));
+  const card = el('div', { class:'card' });
+
+  // Lock bracket
+  const brkBtn = el('button', { class:'btn-primary' }, state.settings.tournament_started ? 'Bracket already locked' : 'Lock bracket entry (tournament started)');
+  brkBtn.disabled = !!state.settings.tournament_started;
+  brkBtn.addEventListener('click', async () => {
+    if (!confirm('Lock bracket entry for everyone? Players can no longer change picks.')) return;
+    const { error } = await sb.from('settings').upsert({ key:'tournament_started', value: true });
+    if (error) toast(error.message, 'err'); else { state.settings.tournament_started = true; toast('Bracket locked'); renderAdmin(); }
+  });
+  card.appendChild(brkBtn);
+
+  const unlockBtn = el('button', { style:'margin-left:8px;' }, 'Unlock bracket');
+  unlockBtn.addEventListener('click', async () => {
+    const { error } = await sb.from('settings').upsert({ key:'tournament_started', value: false });
+    if (error) toast(error.message, 'err'); else { state.settings.tournament_started = false; toast('Bracket unlocked'); renderAdmin(); }
+  });
+  card.appendChild(unlockBtn);
+
+  card.appendChild(el('hr', { style:'border:0;border-top:1px solid var(--border-soft);margin:14px 0;' }));
+
+  // Recalc all
+  const recBtn = el('button', { class:'btn-primary' }, 'Recalculate all match points');
+  recBtn.addEventListener('click', async () => {
+    recBtn.disabled = true;
+    const { error } = await sb.rpc('recalc_all_matches');
+    recBtn.disabled = false;
+    if (error) toast(error.message, 'err'); else toast('Match points recalculated');
+  });
+  card.appendChild(recBtn);
+
+  const brkRec = el('button', { style:'margin-left:8px;' }, 'Recalculate bracket points');
+  brkRec.addEventListener('click', async () => {
+    brkRec.disabled = true;
+    const { error } = await sb.rpc('recalc_bracket');
+    brkRec.disabled = false;
+    if (error) toast(error.message, 'err'); else toast('Bracket points recalculated');
+  });
+  card.appendChild(brkRec);
+
+  card.appendChild(el('hr', { style:'border:0;border-top:1px solid var(--border-soft);margin:14px 0;' }));
+
+  // Reset predictions for a player (admin override)
+  card.appendChild(el('h3', {}, 'Danger zone'));
+  card.appendChild(el('p', { class:'muted' }, 'Use sparingly. These actions cannot be undone.'));
+
+  const wipePreds = el('button', { class:'btn-danger' }, 'Clear ALL predictions');
+  wipePreds.addEventListener('click', async () => {
+    if (!confirm('Delete every prediction by every player? This cannot be undone.')) return;
+    const { error } = await sb.from('predictions').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    if (error) toast(error.message, 'err'); else toast('All predictions cleared');
+  });
+  card.appendChild(wipePreds);
+
+  const wipeResults = el('button', { class:'btn-danger', style:'margin-left:8px;' }, 'Clear all results');
+  wipeResults.addEventListener('click', async () => {
+    if (!confirm('Reset every match to "scheduled" with no scores?')) return;
+    const { error } = await sb.from('matches').update({ home_score: null, away_score: null, status:'scheduled' }).neq('id','00000000-0000-0000-0000-000000000000');
+    if (error) toast(error.message, 'err'); else { toast('Results cleared'); await sb.rpc('recalc_all_matches'); }
+  });
+  card.appendChild(wipeResults);
+
+  root.appendChild(card);
+}
+
+/* ====================================================================
+ * BOOT
+ * ==================================================================== */
+$('#login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const u = $('#li-user').value.trim();
+  const p = $('#li-pin').value.trim();
+  const err = $('#li-err'); err.textContent = '';
+  if (!u || !p) { err.textContent = 'Enter your username and PIN.'; return; }
+  try { await login(u, p); await boot(); }
+  catch (ex) { err.textContent = ex.message || 'Sign in failed.'; }
+});
+
+$('#theme-toggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('wcop-theme', next);
+  $('#theme-toggle').textContent = next === 'dark' ? '🌙' : '☀️';
+});
+const savedTheme = localStorage.getItem('wcop-theme');
+if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
+$('#theme-toggle').textContent = (document.documentElement.getAttribute('data-theme') === 'dark') ? '🌙' : '☀️';
+
+$('#user-chip').addEventListener('click', () => {
+  if (confirm('Sign out?')) logout();
+});
+
+window.addEventListener('hashchange', route);
+
+async function boot() {
+  $('#login').hidden = true;
+  $('#app').hidden = true;
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    $('#login').hidden = false;
+    return;
+  }
+  state.session = session;
+  try {
+    await loadProfile();
+    if (!state.profile) {
+      toast('Account has no profile row. Ask your admin.', 'err');
+      await sb.auth.signOut();
+      $('#login').hidden = false;
+      return;
+    }
+    await loadAll();
+    $('#app').hidden = false;
+    $('#user-name').textContent = state.profile.display_name;
+    $('#user-avatar').textContent = state.profile.initials || '?';
+    $('#user-avatar').style.background = state.profile.avatar_colour || '#22c55e';
+    $$('[data-admin-only]').forEach(e => { e.hidden = !state.profile.is_admin; });
+    if (!location.hash) location.hash = '#dashboard';
+    route();
+  } catch (ex) {
+    console.error(ex);
+    toast('Failed to load: ' + ex.message, 'err', 5000);
+  }
+}
+
+boot();
+</script>
+</body>
+</html>

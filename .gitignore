@@ -1,0 +1,19 @@
+# Local preview / tooling config
+.claude/
+.playwright-mcp/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build / cache (not used here, but defensive)
+dist/
+build/
+node_modules/
