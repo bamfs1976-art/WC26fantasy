@@ -570,20 +570,34 @@ const BRACKET_ROUNDS = [
 const ROUND_LABEL = { group:'Group stage', r32:'Round of 32', r16:'Round of 16', qf:'Quarter-final', sf:'Semi-final', '3rd':'3rd-place', final:'Final' };
 
 /* 3-letter FIFA team codes -> 2-letter ISO codes for flagcdn.com.
-   UK home nations use subdivision codes (gb-eng, gb-sct, gb-wls). */
+   UK home nations use subdivision codes (gb-eng, gb-sct).
+   Map covers all 48 nations that actually qualified for the 2026 World Cup
+   (per the final draw, Washington DC, 5 Dec 2025). */
 const FLAG_ISO = {
-  MEX:'mx', CAN:'ca', JPN:'jp', NGA:'ng',
-  USA:'us', ENG:'gb-eng', IRN:'ir', PAR:'py',
-  FRA:'fr', POR:'pt', AUS:'au', SEN:'sn',
-  BRA:'br', SUI:'ch', CRC:'cr', CIV:'ci',
-  ARG:'ar', CRO:'hr', KOR:'kr', GHA:'gh',
-  GER:'de', URU:'uy', NZL:'nz', CMR:'cm',
-  ESP:'es', COL:'co', SAU:'sa', MAR:'ma',
-  NED:'nl', SRB:'rs', QAT:'qa', JAM:'jm',
-  BEL:'be', DEN:'dk', UZB:'uz', PAN:'pa',
-  ITA:'it', AUT:'at', TUN:'tn', NZ2:'nc',
-  POL:'pl', ECU:'ec', JOR:'jo', SCO:'gb-sct',
-  NOR:'no', TUR:'tr', ALG:'dz', WAL:'gb-wls',
+  // Group A
+  MEX:'mx', KOR:'kr', CZE:'cz', RSA:'za',
+  // Group B
+  CAN:'ca', SUI:'ch', BIH:'ba', QAT:'qa',
+  // Group C
+  BRA:'br', MAR:'ma', SCO:'gb-sct', HAI:'ht',
+  // Group D
+  USA:'us', TUR:'tr', AUS:'au', PAR:'py',
+  // Group E
+  GER:'de', ECU:'ec', CIV:'ci', CUW:'cw',
+  // Group F
+  NED:'nl', JPN:'jp', SWE:'se', TUN:'tn',
+  // Group G
+  BEL:'be', IRN:'ir', EGY:'eg', NZL:'nz',
+  // Group H
+  ESP:'es', URU:'uy', SAU:'sa', CPV:'cv',
+  // Group I
+  FRA:'fr', NOR:'no', SEN:'sn', IRQ:'iq',
+  // Group J
+  ARG:'ar', AUT:'at', ALG:'dz', JOR:'jo',
+  // Group K
+  POR:'pt', COL:'co', UZB:'uz', COD:'cd',
+  // Group L
+  ENG:'gb-eng', CRO:'hr', GHA:'gh', PAN:'pa',
 };
 
 function flagUrl(team, hires=false) {

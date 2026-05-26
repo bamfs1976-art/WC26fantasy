@@ -15,70 +15,70 @@
 begin;
 
 -- --------------------------------------------------------------------------
--- TEAMS  (48, four per group A..L)
--- Codes are 3-letter, names are editable later in admin UI.
+-- TEAMS  (the actual 48 qualifiers from the FIFA World Cup 2026 final draw,
+-- held in Washington DC on 5 December 2025)
 -- --------------------------------------------------------------------------
 insert into public.teams (code, name, group_code, flag_emoji, seed_rank) values
   -- Group A
-  ('MEX','Mexico',          'A','🇲🇽',1),
-  ('CAN','Canada',          'A','🇨🇦',2),
-  ('JPN','Japan',            'A','🇯🇵',3),
-  ('NGA','Nigeria',          'A','🇳🇬',4),
+  ('MEX','Mexico',                  'A','🇲🇽',1),
+  ('KOR','South Korea',             'A','🇰🇷',2),
+  ('CZE','Czechia',                 'A','🇨🇿',3),
+  ('RSA','South Africa',            'A','🇿🇦',4),
   -- Group B
-  ('USA','United States',    'B','🇺🇸',1),
-  ('ENG','England',          'B','🏴',2),
-  ('IRN','Iran',             'B','🇮🇷',3),
-  ('PAR','Paraguay',         'B','🇵🇾',4),
+  ('CAN','Canada',                  'B','🇨🇦',1),
+  ('SUI','Switzerland',             'B','🇨🇭',2),
+  ('BIH','Bosnia and Herzegovina',  'B','🇧🇦',3),
+  ('QAT','Qatar',                   'B','🇶🇦',4),
   -- Group C
-  ('FRA','France',           'C','🇫🇷',1),
-  ('POR','Portugal',         'C','🇵🇹',2),
-  ('AUS','Australia',        'C','🇦🇺',3),
-  ('SEN','Senegal',          'C','🇸🇳',4),
+  ('BRA','Brazil',                  'C','🇧🇷',1),
+  ('MAR','Morocco',                 'C','🇲🇦',2),
+  ('SCO','Scotland',                'C','🏴',3),
+  ('HAI','Haiti',                   'C','🇭🇹',4),
   -- Group D
-  ('BRA','Brazil',           'D','🇧🇷',1),
-  ('SUI','Switzerland',      'D','🇨🇭',2),
-  ('CRC','Costa Rica',       'D','🇨🇷',3),
-  ('CIV','Côte d''Ivoire',   'D','🇨🇮',4),
+  ('USA','United States',           'D','🇺🇸',1),
+  ('TUR','Türkiye',                  'D','🇹🇷',2),
+  ('AUS','Australia',               'D','🇦🇺',3),
+  ('PAR','Paraguay',                'D','🇵🇾',4),
   -- Group E
-  ('ARG','Argentina',        'E','🇦🇷',1),
-  ('CRO','Croatia',          'E','🇭🇷',2),
-  ('KOR','South Korea',      'E','🇰🇷',3),
-  ('GHA','Ghana',            'E','🇬🇭',4),
+  ('GER','Germany',                 'E','🇩🇪',1),
+  ('ECU','Ecuador',                 'E','🇪🇨',2),
+  ('CIV','Côte d''Ivoire',          'E','🇨🇮',3),
+  ('CUW','Curaçao',                 'E','🇨🇼',4),
   -- Group F
-  ('GER','Germany',          'F','🇩🇪',1),
-  ('URU','Uruguay',          'F','🇺🇾',2),
-  ('NZL','New Zealand',      'F','🇳🇿',3),
-  ('CMR','Cameroon',         'F','🇨🇲',4),
+  ('NED','Netherlands',             'F','🇳🇱',1),
+  ('JPN','Japan',                   'F','🇯🇵',2),
+  ('SWE','Sweden',                  'F','🇸🇪',3),
+  ('TUN','Tunisia',                 'F','🇹🇳',4),
   -- Group G
-  ('ESP','Spain',            'G','🇪🇸',1),
-  ('COL','Colombia',         'G','🇨🇴',2),
-  ('SAU','Saudi Arabia',     'G','🇸🇦',3),
-  ('MAR','Morocco',          'G','🇲🇦',4),
+  ('BEL','Belgium',                 'G','🇧🇪',1),
+  ('IRN','Iran',                    'G','🇮🇷',2),
+  ('EGY','Egypt',                   'G','🇪🇬',3),
+  ('NZL','New Zealand',             'G','🇳🇿',4),
   -- Group H
-  ('NED','Netherlands',      'H','🇳🇱',1),
-  ('SRB','Serbia',           'H','🇷🇸',2),
-  ('QAT','Qatar',            'H','🇶🇦',3),
-  ('JAM','Jamaica',          'H','🇯🇲',4),
+  ('ESP','Spain',                   'H','🇪🇸',1),
+  ('URU','Uruguay',                 'H','🇺🇾',2),
+  ('SAU','Saudi Arabia',            'H','🇸🇦',3),
+  ('CPV','Cabo Verde',              'H','🇨🇻',4),
   -- Group I
-  ('BEL','Belgium',          'I','🇧🇪',1),
-  ('DEN','Denmark',          'I','🇩🇰',2),
-  ('UZB','Uzbekistan',       'I','🇺🇿',3),
-  ('PAN','Panama',           'I','🇵🇦',4),
+  ('FRA','France',                  'I','🇫🇷',1),
+  ('NOR','Norway',                  'I','🇳🇴',2),
+  ('SEN','Senegal',                 'I','🇸🇳',3),
+  ('IRQ','Iraq',                    'I','🇮🇶',4),
   -- Group J
-  ('ITA','Italy',            'J','🇮🇹',1),
-  ('AUT','Austria',          'J','🇦🇹',2),
-  ('TUN','Tunisia',          'J','🇹🇳',3),
-  ('NZ2','New Caledonia',    'J','🇳🇨',4),
+  ('ARG','Argentina',               'J','🇦🇷',1),
+  ('AUT','Austria',                 'J','🇦🇹',2),
+  ('ALG','Algeria',                 'J','🇩🇿',3),
+  ('JOR','Jordan',                  'J','🇯🇴',4),
   -- Group K
-  ('POL','Poland',           'K','🇵🇱',1),
-  ('ECU','Ecuador',          'K','🇪🇨',2),
-  ('JOR','Jordan',           'K','🇯🇴',3),
-  ('SCO','Scotland',         'K','🏴',4),
+  ('POR','Portugal',                'K','🇵🇹',1),
+  ('COL','Colombia',                'K','🇨🇴',2),
+  ('UZB','Uzbekistan',              'K','🇺🇿',3),
+  ('COD','DR Congo',                'K','🇨🇩',4),
   -- Group L
-  ('NOR','Norway',           'L','🇳🇴',1),
-  ('TUR','Turkey',            'L','🇹🇷',2),
-  ('ALG','Algeria',          'L','🇩🇿',3),
-  ('WAL','Wales',            'L','🏴',4);
+  ('ENG','England',                 'L','🏴',1),
+  ('CRO','Croatia',                 'L','🇭🇷',2),
+  ('GHA','Ghana',                   'L','🇬🇭',3),
+  ('PAN','Panama',                  'L','🇵🇦',4);
 
 -- --------------------------------------------------------------------------
 -- GROUP FIXTURES  (round-robin per group: 6 matches × 12 groups = 72)
@@ -203,6 +203,7 @@ begin
   select id into carla from public.profiles where username = 'carla';
   select id into danny from public.profiles where username = 'danny';
   select id into ellie from public.profiles where username = 'ellie';
+  if alice is null or bob is null then return; end if;
   select id into m1 from public.matches where match_no = 1;
   select id into m2 from public.matches where match_no = 2;
   select id into m3 from public.matches where match_no = 3;
@@ -235,6 +236,7 @@ do $$
 declare alice uuid;
 begin
   select id into alice from public.profiles where username = 'alice';
+  if alice is null then return; end if;
   -- pick 8 teams to reach R32 (in real use a player picks 32)
   insert into public.bracket_picks (player_id, round, team_id)
     select alice, 'r32', id from public.teams where seed_rank = 1 order by group_code limit 8;

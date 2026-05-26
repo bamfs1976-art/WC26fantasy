@@ -236,13 +236,35 @@ React later — the schema and scoring functions don't change.
 
 ---
 
+## Qualified nations
+
+Seed data uses the actual 48 nations from the FIFA World Cup 2026 final draw
+(Washington DC, 5 December 2025). Group compositions match the official draw:
+
+| Grp | Teams |
+|-----|-------|
+| A | Mexico, South Korea, Czechia, South Africa |
+| B | Canada, Switzerland, Bosnia and Herzegovina, Qatar |
+| C | Brazil, Morocco, Scotland, Haiti |
+| D | United States, Türkiye, Australia, Paraguay |
+| E | Germany, Ecuador, Côte d'Ivoire, Curaçao |
+| F | Netherlands, Japan, Sweden, Tunisia |
+| G | Belgium, Iran, Egypt, New Zealand |
+| H | Spain, Uruguay, Saudi Arabia, Cabo Verde |
+| I | France, Norway, Senegal, Iraq |
+| J | Argentina, Austria, Algeria, Jordan |
+| K | Portugal, Colombia, Uzbekistan, DR Congo |
+| L | England, Croatia, Ghana, Panama |
+
+Notable absentees: Italy (lost UEFA playoff to Bosnia), Nigeria, Cameroon, Wales, Jamaica, Denmark, Poland, Serbia.
+
 ## Known issues / heads-ups
 
-- **Flag emojis on Windows desktop** render as the two-letter regional indicator pair (e.g. "MX" instead of 🇲🇽). Mac, iOS, Android, and most modern browsers render them correctly. If your office is heavy on Windows desktop and you want real flags, bundle [Twemoji](https://twemoji.maxcdn.com/) — but that adds ~250kB.
 - **Match kickoff times in the seed are placeholders** starting 2026-06-11. Replace them with real fixture times once published (Admin → Fixtures).
 - **Best-3rd-placed-team logic** is not derived automatically — the admin types in the 32 actual R32 qualifiers via Admin → Bracket. The scoring rule doesn't need group-table math, so this is fine.
 - **PINs are case-insensitive** at the username level (we lowercase before forming the synthetic email). PIN itself is case-sensitive, but it's digits.
 - **Session persistence** uses Supabase's default localStorage. The token is a short-lived JWT so the exposure window is small, but if your security policy forbids any auth storage in localStorage, set `persistSession: false` in the `createClient` call.
+- **Flag images** are PNGs from [flagcdn.com](https://flagcdn.com) (free, ~1-3 KB each, lazy-loaded). Works on every device including Windows desktop.
 
 ---
 
