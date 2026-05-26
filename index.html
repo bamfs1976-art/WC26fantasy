@@ -127,8 +127,9 @@ a:hover { text-decoration: underline; }
   background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
   width:36px; height:36px; border-radius: 50%; cursor: pointer;
   display:flex; align-items:center; justify-content:center; font-size:16px;
+  text-decoration: none; font-weight: 600;
 }
-.icon-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.icon-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); text-decoration: none; }
 .icon-btn:focus-visible { outline:2px solid var(--accent-blue); outline-offset:2px; }
 
 main { flex: 1; padding: 28px 20px 80px; max-width: 1200px; margin: 0 auto; width: 100%; }
@@ -231,6 +232,67 @@ label { font-size: 13px; color: var(--text-secondary); display:block; margin-bot
 .login-card .err { color: var(--danger); font-size: 13px; margin-top: 10px; min-height: 18px; }
 .login-card .footer { margin-top: 18px; font-size: 12px; color: var(--text-muted); text-align: center; }
 .login-card .footer code { background: var(--bg-tertiary); padding: 1px 5px; border-radius: 4px; font-size:11px; }
+.login-card details { margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 14px; }
+.login-card details summary {
+  cursor: pointer; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); list-style: none;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 0;
+}
+.login-card details summary::-webkit-details-marker { display: none; }
+.login-card details summary::after {
+  content: '▾'; font-size: 11px; transition: transform .2s ease;
+}
+.login-card details[open] summary::after { transform: rotate(180deg); }
+.login-card details summary:hover { color: var(--text-primary); }
+.login-card details .panel { padding: 10px 0 4px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.login-card details .panel strong { color: var(--text-primary); font-weight: 600; }
+.login-card details .panel ul { margin: 6px 0 14px 18px; padding: 0; }
+.login-card details .panel li { margin: 3px 0; }
+.login-card details .panel .rule {
+  background: var(--bg-tertiary); padding: 4px 8px; border-radius: 4px;
+  font-size: 12px; display: inline-block; font-weight: 600; margin-right: 6px;
+}
+.login-card details .panel .pts { color: var(--accent-green); font-weight: 700; }
+
+/* ---------- HOW IT WORKS SCREEN ------------------------------------ */
+.howto { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.howto .card h3 { color: var(--text-primary); text-transform: none; font-size: 17px; letter-spacing:-.01em; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.howto .card h3 .badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--accent-green); color: #052e16; font-size: 18px; }
+.howto .card p { margin: 0 0 12px; color: var(--text-secondary); line-height: 1.6; }
+.howto .card ul { margin: 0; padding: 0 0 0 18px; color: var(--text-secondary); line-height: 1.7; }
+.howto .card li { margin: 4px 0; }
+.howto .card .scoring-grid {
+  display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: center;
+  margin: 10px 0;
+}
+.howto .card .pts-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 38px; height: 32px; padding: 0 10px;
+  background: var(--accent-green); color: #052e16;
+  border-radius: 8px; font-weight: 700; font-size: 16px;
+}
+.howto .card .pts-pill.exact { background: var(--accent-gold); color: #422006; }
+.howto .card .pts-pill.zero  { background: var(--bg-tertiary); color: var(--text-muted); }
+.howto .card .example {
+  margin-top: 12px; padding: 12px; background: var(--bg-tertiary);
+  border-radius: 8px; font-size: 13px; color: var(--text-secondary);
+}
+.howto .card .example strong { color: var(--text-primary); }
+
+.hint-card {
+  background: linear-gradient(135deg, rgba(34,197,94,.12), rgba(59,130,246,.06));
+  border: 1px solid rgba(34,197,94,.3);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 18px;
+}
+.hint-card .icon { font-size: 28px; flex-shrink: 0; }
+.hint-card .body { flex: 1; }
+.hint-card .body strong { display: block; color: var(--text-primary); margin-bottom: 2px; }
+.hint-card .body span { color: var(--text-secondary); font-size: 13px; }
+.hint-card a { white-space: nowrap; }
 
 /* ---------- FLAG IMAGES -------------------------------------------- */
 .flag-img {
@@ -478,7 +540,26 @@ label { font-size: 13px; color: var(--text-secondary); display:block; margin-bot
     </div>
     <button class="btn-primary" type="submit">Sign in</button>
     <div class="err" id="li-err" role="alert" aria-live="polite"></div>
-    <div class="footer">Demo: <code>alice</code> / <code>111111</code> · admin <code>admin</code> / <code>262626</code></div>
+    <div class="footer">Need a login? Ask your office admin.</div>
+
+    <details>
+      <summary>How does this work?</summary>
+      <div class="panel">
+        <p>Predict scores for all <strong>104 matches</strong> and tip which teams will reach each knockout round. Most points across both wins.</p>
+        <p><strong>Match scoring</strong></p>
+        <ul>
+          <li><span class="pts">+3</span> exact score (e.g. you say 2–1, actual is 2–1)</li>
+          <li><span class="pts">+1</span> correct result (right winner, any score)</li>
+          <li>0 if wrong</li>
+        </ul>
+        <p><strong>Bracket scoring</strong></p>
+        <ul>
+          <li>Pick teams for each knockout round</li>
+          <li><span class="pts">+1</span> per correct team per round (max 63 bracket points)</li>
+        </ul>
+        <p style="margin-top:10px;">Predictions <strong>lock at kickoff</strong>. Bracket locks when the tournament starts. Sign in to see fixtures, your picks and the live leaderboard.</p>
+      </div>
+    </details>
   </form>
 </div>
 
@@ -499,9 +580,11 @@ label { font-size: 13px; color: var(--text-secondary); display:block; margin-bot
       <a href="#bracket">Bracket</a>
       <a href="#leaderboard">Leaderboard</a>
       <a href="#me">My picks</a>
+      <a href="#how">How it works</a>
       <a href="#admin" class="admin" data-admin-only hidden>Admin</a>
     </div>
     <div class="spacer"></div>
+    <a id="help-btn" href="#how" class="icon-btn" title="How it works" aria-label="How it works and scoring rules">?</a>
     <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle dark/light theme">🌙</button>
     <button id="user-chip" class="user-chip" aria-label="Account">
       <span class="avatar" id="user-avatar">--</span>
@@ -515,6 +598,7 @@ label { font-size: 13px; color: var(--text-secondary); display:block; margin-bot
     <section id="screen-bracket"   class="screen" aria-labelledby="brk-h"></section>
     <section id="screen-leaderboard" class="screen" aria-labelledby="lb-h"></section>
     <section id="screen-me"        class="screen" aria-labelledby="me-h"></section>
+    <section id="screen-how"       class="screen" aria-labelledby="how-h"></section>
     <section id="screen-admin"     class="screen" aria-labelledby="ad-h"></section>
   </main>
 
@@ -721,14 +805,14 @@ async function logout() {
 /* ====================================================================
  * ROUTING
  * ==================================================================== */
-const ROUTES = ['dashboard','predict','bracket','leaderboard','me','admin'];
+const ROUTES = ['dashboard','predict','bracket','leaderboard','me','how','admin'];
 function route() {
   let r = (location.hash || '#dashboard').replace('#','').split('?')[0];
   if (!ROUTES.includes(r)) r = 'dashboard';
   if (r === 'admin' && !state.profile?.is_admin) r = 'dashboard';
   $$('.screen').forEach(s => s.classList.toggle('active', s.id === `screen-${r}`));
   $$('.navlinks a, .mobnav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${r}`));
-  const fn = { dashboard:renderDashboard, predict:renderPredict, bracket:renderBracket, leaderboard:renderLeaderboard, me:renderMe, admin:renderAdmin }[r];
+  const fn = { dashboard:renderDashboard, predict:renderPredict, bracket:renderBracket, leaderboard:renderLeaderboard, me:renderMe, how:renderHow, admin:renderAdmin }[r];
   fn && fn();
   window.scrollTo({ top:0, behavior:'instant' });
 }
@@ -763,6 +847,19 @@ async function renderDashboard() {
     ? `Welcome to the World Cup 2026 office pool. Your rank: #${myRank} of ${totalPlayers}.`
     : `Welcome to the World Cup 2026 office pool. Add players in Admin to start the leaderboard.`));
 
+  // First-time hint: show until they make at least one prediction
+  const brkDone = Object.values(state.bracketPicks).reduce((a,s)=>a+s.size, 0);
+  if (myPredCount === 0 && brkDone === 0) {
+    root.appendChild(el('div', { class:'hint-card' }, [
+      el('div', { class:'icon', 'aria-hidden':'true' }, '👋'),
+      el('div', { class:'body' }, [
+        el('strong', {}, 'New here? Quick rules'),
+        el('span', {}, '+3 exact score · +1 correct result · +1 per correct bracket team per round (max 63). Predictions lock at kickoff.'),
+      ]),
+      el('a', { href:'#how', class:'btn btn-sm' }, 'Full rules →'),
+    ]));
+  }
+
   // stat grid
   const grid = el('div', { class:'cards-grid' });
   grid.appendChild(statCard('Total points',     myMatchPts + myBrkPts, `${myMatchPts} match · ${myBrkPts} bracket`, '🏆'));
@@ -785,7 +882,6 @@ async function renderDashboard() {
   }
 
   // bracket status
-  const brkDone = Object.values(state.bracketPicks).reduce((a,s)=>a+s.size, 0);
   const brkLocked = bracketLocked();
   root.appendChild(el('div', { class:'card', style:'margin-top:16px;' }, [
     el('h2', { style:'margin-top:0;' }, 'Your bracket'),
@@ -1245,6 +1341,144 @@ function renderMe() {
       root.appendChild(card);
     });
   }
+}
+
+/* ====================================================================
+ * HOW IT WORKS
+ * ==================================================================== */
+function renderHow() {
+  const root = $('#screen-how');
+  root.innerHTML = '';
+  root.appendChild(el('h1', { id:'how-h' }, 'How it works'));
+  root.appendChild(el('p', { class:'sub' }, 'Two ways to score: match predictions and the bracket. Highest combined total wins.'));
+
+  const grid = el('div', { class:'howto' });
+
+  // Match scoring card
+  const matchCard = el('div', { class:'card' });
+  matchCard.appendChild(el('h3', {}, [
+    el('span', { class:'badge' }, '⚽'),
+    'Match predictions',
+  ]));
+  matchCard.appendChild(el('p', {}, 'For each of the 104 matches, predict the final score. Points awarded after the match finishes.'));
+
+  const scoring = el('div', { class:'scoring-grid' });
+  scoring.append(
+    el('div', { class:'pts-pill exact' }, '+3'),
+    el('div', {}, el('span', {}, [el('strong', {}, 'Exact score'), ' — you got both numbers right'])),
+    el('div', { class:'pts-pill' }, '+1'),
+    el('div', {}, el('span', {}, [el('strong', {}, 'Correct result'), ' — right winner (or both said draw), wrong score'])),
+    el('div', { class:'pts-pill zero' }, '0'),
+    el('div', {}, el('span', {}, [el('strong', {}, 'Wrong'), ' — picked the wrong winner'])),
+  );
+  matchCard.appendChild(scoring);
+
+  const example = el('div', { class:'example' });
+  example.innerHTML = `
+    <strong>Example.</strong> Actual result is Brazil 2 – 1 Morocco.<br>
+    You said <strong>2–1</strong>: <span class="pts-pill exact" style="margin-left:6px;padding:0 8px;height:22px;min-width:30px;font-size:13px;">+3</span><br>
+    You said <strong>3–0</strong>: <span class="pts-pill" style="margin-left:6px;padding:0 8px;height:22px;min-width:30px;font-size:13px;">+1</span> (right winner)<br>
+    You said <strong>0–2</strong>: <span class="pts-pill zero" style="margin-left:6px;padding:0 8px;height:22px;min-width:30px;font-size:13px;">0</span>
+  `;
+  matchCard.appendChild(example);
+
+  matchCard.appendChild(el('p', { style:'margin-top:14px;font-size:13px;' }, [
+    el('strong', {}, '⏰ Lock-in: '), 'predictions lock when each match kicks off. You can edit any time before that.'
+  ]));
+  grid.appendChild(matchCard);
+
+  // Bracket card
+  const brkCard = el('div', { class:'card' });
+  brkCard.appendChild(el('h3', {}, [
+    el('span', { class:'badge' }, '🏆'),
+    'Bracket predictor',
+  ]));
+  brkCard.appendChild(el('p', {}, 'Tip which teams will reach each knockout round. Pick before the tournament starts and you can\'t change them.'));
+
+  brkCard.appendChild(el('p', { style:'font-weight:600;color:var(--text-primary);margin-top:14px;margin-bottom:6px;' }, 'How to pick'));
+  const steps = el('ul');
+  [
+    'Pick 32 of 48 teams to reach the Round of 32 (the group-stage qualifiers).',
+    'From those 32, pick 16 to reach the Round of 16.',
+    'From those 16, pick 8 quarter-finalists.',
+    'Pick 4 semi-finalists, then 2 finalists, then your champion.',
+  ].forEach(s => steps.appendChild(el('li', {}, s)));
+  brkCard.appendChild(steps);
+
+  brkCard.appendChild(el('p', { style:'font-weight:600;color:var(--text-primary);margin-top:14px;margin-bottom:6px;' }, 'Scoring'));
+  brkCard.appendChild(el('p', { style:'margin-bottom:6px;' }, [
+    el('span', { class:'pts-pill', style:'margin-right:8px;' }, '+1'),
+    'per team you correctly tipped to reach each round.'
+  ]));
+
+  const tbl = el('table', { style:'margin-top:8px;font-size:13px;' });
+  tbl.innerHTML = `
+    <thead><tr><th>Round</th><th class="num">Picks</th><th class="num">Max pts</th></tr></thead>
+    <tbody>
+      <tr><td>Round of 32 qualifiers</td><td class="num">32</td><td class="num">32</td></tr>
+      <tr><td>Round of 16</td><td class="num">16</td><td class="num">16</td></tr>
+      <tr><td>Quarter-finals</td><td class="num">8</td><td class="num">8</td></tr>
+      <tr><td>Semi-finals</td><td class="num">4</td><td class="num">4</td></tr>
+      <tr><td>Final</td><td class="num">2</td><td class="num">2</td></tr>
+      <tr><td>Champion</td><td class="num">1</td><td class="num">1</td></tr>
+      <tr style="border-top:2px solid var(--border);"><td><strong>Total possible</strong></td><td class="num"></td><td class="num"><strong>63</strong></td></tr>
+    </tbody>
+  `;
+  brkCard.appendChild(tbl);
+
+  brkCard.appendChild(el('div', { class:'example', style:'margin-top:14px;' }, [
+    el('strong', {}, 'Forgiving rule. '),
+    'You score for any correct team in each round — even if your earlier-round picks for that team were wrong. Tipped Brazil for the semis and they made it? You get the point, even if you had them losing the quarter-final to the wrong team.',
+  ]));
+  grid.appendChild(brkCard);
+
+  // Tiebreakers card
+  const tbCard = el('div', { class:'card' });
+  tbCard.appendChild(el('h3', {}, [
+    el('span', { class:'badge' }, '🎯'),
+    'Tiebreakers',
+  ]));
+  tbCard.appendChild(el('p', {}, 'If two players finish on the same total points, the leaderboard ranks them by:'));
+  const tbList = el('ol', { style:'padding-left:18px;color:var(--text-secondary);line-height:1.7;' });
+  [
+    el('span', {}, [el('strong', {}, 'Most exact scores'), ' — the number of times you predicted the precise final.']),
+    el('span', {}, [el('strong', {}, 'Most correct results'), ' — total winners/draws called right.']),
+    el('span', {}, [el('strong', {}, 'Most bracket points'), '.']),
+  ].forEach(s => tbList.appendChild(el('li', {}, s)));
+  tbCard.appendChild(tbList);
+  tbCard.appendChild(el('p', { style:'margin-top:14px;font-size:13px;' }, 'If you\'re still tied after all three, you share the rank — there\'s no random tiebreak.'));
+  grid.appendChild(tbCard);
+
+  // Tournament format card
+  const fmtCard = el('div', { class:'card' });
+  fmtCard.appendChild(el('h3', {}, [
+    el('span', { class:'badge' }, '🌐'),
+    'Tournament format',
+  ]));
+  fmtCard.appendChild(el('p', {}, 'First-ever 48-nation World Cup, hosted by USA, Canada and Mexico in June and July 2026.'));
+  const fmtList = el('ul');
+  [
+    '12 groups of 4 (groups A through L) — 72 group matches',
+    '32 teams advance to the knockout stage: 2 from each group (24) + 8 best third-placed teams',
+    'Knockouts: Round of 32 → Round of 16 → Quarter-finals → Semi-finals → Final',
+    '104 matches in total over ~5 weeks',
+  ].forEach(s => fmtList.appendChild(el('li', {}, s)));
+  fmtCard.appendChild(fmtList);
+  grid.appendChild(fmtCard);
+
+  root.appendChild(grid);
+
+  // CTA
+  root.appendChild(el('div', { class:'card', style:'margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;' }, [
+    el('div', {}, [
+      el('strong', { style:'font-size:16px;' }, 'Ready to play?'),
+      el('div', { class:'muted', style:'font-size:13px;margin-top:2px;' }, 'Set your match predictions and lock in your bracket.'),
+    ]),
+    el('div', { style:'display:flex;gap:8px;' }, [
+      el('a', { href:'#predict', class:'btn btn-primary' }, 'Predict matches →'),
+      el('a', { href:'#bracket', class:'btn' }, 'Fill bracket →'),
+    ]),
+  ]));
 }
 
 /* ====================================================================
