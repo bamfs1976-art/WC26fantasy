@@ -432,7 +432,12 @@ begin
   )
   values (
     gen_random_uuid(), v_user_id, v_user_id::text,
-    jsonb_build_object('sub', v_user_id::text, 'email', v_email),
+    jsonb_build_object(
+      'sub',            v_user_id::text,
+      'email',          v_email,
+      'email_verified', true,
+      'phone_verified', false
+    ),
     'email', now(), now(), now()
   );
 
