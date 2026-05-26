@@ -399,9 +399,12 @@ begin
     raise exception 'Username too short';
   end if;
 
-  -- Allow first call (bootstrap) or admin caller.
+  -- Allow first call (bootstrap), admin caller, OR direct DB access (SQL editor / migrations).
   select count(*) into v_existing from public.profiles;
-  if v_existing > 0 and not public.is_admin() then
+  if v_existing > 0
+     and not public.is_admin()
+     and session_user not in ('postgres','supabase_admin','supabase_auth_admin')
+  then
     raise exception 'Only admins can create players';
   end if;
 
