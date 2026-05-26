@@ -385,7 +385,7 @@ create or replace function public.admin_create_player(
 returns uuid
 language plpgsql
 security definer
-set search_path = public, auth
+set search_path = public, auth, extensions
 as $$
 declare
   v_email   text;
@@ -416,7 +416,7 @@ begin
   )
   values (
     v_user_id, '00000000-0000-0000-0000-000000000000',
-    v_email, crypt(p_pin || '-wcop2026', gen_salt('bf')),
+    v_email, extensions.crypt(p_pin || '-wcop2026', extensions.gen_salt('bf')),
     now(), 'authenticated', 'authenticated',
     '{"provider":"email","providers":["email"]}'::jsonb,
     jsonb_build_object('username', p_username, 'display_name', p_display_name),
@@ -448,7 +448,7 @@ create or replace function public.admin_reset_pin(p_username text, p_new_pin tex
 returns boolean
 language plpgsql
 security definer
-set search_path = public, auth
+set search_path = public, auth, extensions
 as $$
 declare
   v_email text;
@@ -457,7 +457,7 @@ begin
   if length(p_new_pin) < 4 then raise exception 'PIN too short'; end if;
   v_email := lower(p_username) || '@wcop.local';
   update auth.users
-    set encrypted_password = crypt(p_new_pin || '-wcop2026', gen_salt('bf')),
+    set encrypted_password = extensions.crypt(p_new_pin || '-wcop2026', extensions.gen_salt('bf')),
         updated_at = now()
     where email = v_email;
   return found;
